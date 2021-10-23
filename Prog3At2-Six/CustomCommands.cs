@@ -53,7 +53,7 @@ namespace Prog3At2_Six
             {
                 if (_AboutCommand == null)
                 {
-                    _AboutCommand = new RoutedUICommand(@"_About", @"About", typeof(CustomCommands));
+                    _AboutCommand = new RoutedUICommand(@"_About", nameof(About), typeof(CustomCommands));
                 }
 
                 return _AboutCommand;
@@ -72,7 +72,7 @@ namespace Prog3At2_Six
                     InputGestureCollection input = new();
                     input.Add(new KeyGesture(Key.A, ModifierKeys.Control, "Ctrl+A"));
 
-                    _AddCommand = new RoutedUICommand(@"_Add", @"Add", typeof(CustomCommands), input);
+                    _AddCommand = new RoutedUICommand(@"_Add", nameof(Add), typeof(CustomCommands), input);
                 }
 
                 return _AddCommand;
