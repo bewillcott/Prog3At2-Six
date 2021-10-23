@@ -31,6 +31,9 @@ namespace Prog3At2_Six
     using System.Windows;
     using System.Windows.Input;
 
+    /// <summary>
+    /// Defines the <see cref="MainWindow" />.
+    /// </summary>
     public partial class MainWindow
     {
         /// <summary>
@@ -108,6 +111,7 @@ namespace Prog3At2_Six
 
             if (!cancel)
             {
+                CentreFrame.Content = blankPage;
                 FileIsOpen = false;
                 DataIsDirty = false;
             }
@@ -116,11 +120,21 @@ namespace Prog3At2_Six
         }
 
         /// <summary>
-        /// The ExitMenuItem_Click.
+        /// The ExitCommand_CanExecute.
         /// </summary>
         /// <param name="sender">The sender<see cref="object"/>.</param>
-        /// <param name="e">The e<see cref="RoutedEventArgs"/>.</param>
-        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        /// <param name="e">The e<see cref="CanExecuteRoutedEventArgs"/>.</param>
+        private void ExitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// The ExitCommand_Executed.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="ExecutedRoutedEventArgs"/>.</param>
+        private void ExitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
             e.Handled = true;
@@ -145,7 +159,21 @@ namespace Prog3At2_Six
         {
             // TODO: Display FileOpenDialog
             // TODO: Open/Read in the file
-            MessageBox.Show("File/Open selected or Ctrl+O pressed!");
+            // Prepare data
+            CensorData = new();
+
+            // Test data
+            CensorData.Add(new(new(2021, 1, 12), "Temperature", 25.0));
+            CensorData.Add(new(new(2021, 1, 13), "Temperature", 27.3));
+            CensorData.Add(new(new(2021, 1, 14), "Temperature", 22.4));
+            CensorData.Add(new(new(2021, 1, 15), "Temperature", 26.1));
+            CensorData.Add(new(new(2021, 1, 16), "Temperature", 28.3));
+
+            // Open DisplayFilePage
+            DisplayFilePage = new DisplayFilePage(CensorData);
+            CentreFrame.Content = DisplayFilePage;
+
+            //MessageBox.Show("File/Open selected or Ctrl+O pressed!");
             FileIsOpen = true;
             e.Handled = true;
         }

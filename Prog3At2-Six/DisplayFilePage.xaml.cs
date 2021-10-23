@@ -1,5 +1,5 @@
 ﻿/*
- *  File Name:   MainWindow.xaml.cs
+ *  File Name:   DisplayFilePage.xaml.cs
  *
  *  Project:     Prog3At2-Six
  *
@@ -21,52 +21,39 @@
  * ****************************************************************
  * Name: Bradley Willcott
  * ID:   M198449
- * Date: 21/10/2021
+ * Date: 23/10/2021
  * ****************************************************************
  */
 
 namespace Prog3At2_Six
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Navigation;
+    using System.Windows.Shapes;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml.
+    /// Interaction logic for DisplayFilePage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DisplayFilePage : Page
     {
-        /// <summary>
-        /// Defines the blankPage.
-        /// </summary>
-        private static readonly BlankPage blankPage = new BlankPage();
+        private readonly List<CensorRecord> censorData;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
-        /// </summary>
-        public MainWindow()
+        public DisplayFilePage(List<CensorRecord> censorData)
         {
             InitializeComponent();
-            CentreFrame.Content = blankPage;
+            this.censorData = censorData;
+            csvListView.ItemsSource = censorData;
         }
-
-        /// <summary>
-        /// Gets the CensorData.
-        /// </summary>
-        public List<CensorRecord> CensorData { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether DataIsDirty.
-        /// </summary>
-        public bool DataIsDirty { get; set; }
-
-        /// <summary>
-        /// Gets the DisplayFilePage.
-        /// </summary>
-        public DisplayFilePage DisplayFilePage { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether FileIsOpen.
-        /// </summary>
-        public bool FileIsOpen { get; set; }
     }
 }

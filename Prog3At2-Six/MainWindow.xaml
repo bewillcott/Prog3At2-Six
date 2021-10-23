@@ -42,24 +42,27 @@
         <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
         <CommandBinding Command="{x:Static cmds:CustomCommands.Add}" CanExecute="AddCommand_CanExecute" Executed="AddCommand_Executed" />
         <CommandBinding Command="{x:Static cmds:CustomCommands.About}" CanExecute="AboutCommand_CanExecute" Executed="AboutCommand_Executed" />
+        <CommandBinding Command="{x:Static cmds:CustomCommands.Exit}" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed" />
     </Window.CommandBindings>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+        <Menu DockPanel.Dock="Top" Padding="3">
+            <MenuItem Header="_File" Padding="5,3">
                 <MenuItem Command="Open" />
                 <MenuItem Command="Close" />
                 <Separator />
                 <MenuItem Command="Save" />
                 <Separator />
-                <MenuItem Header="E_xit" Click="ExitMenuItem_Click" />
+                <MenuItem Command="{x:Static cmds:CustomCommands.Exit}" />
             </MenuItem>
-            <MenuItem Header="_Edit">
+            <MenuItem Header="_Edit" Padding="5,3">
                 <MenuItem Command="{x:Static cmds:CustomCommands.Add}" />
             </MenuItem>
-            <MenuItem Header="_Help">
+            <MenuItem Header="_Help" Padding="5,3">
                 <MenuItem Command="{x:Static cmds:CustomCommands.About}" />
             </MenuItem>
         </Menu>
+        <Line DockPanel.Dock="Top" Stroke="DimGray" />
+        <Frame x:Name="CentreFrame" NavigationUIVisibility="Hidden" />
     </DockPanel>
 </Window>

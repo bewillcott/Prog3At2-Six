@@ -1,5 +1,5 @@
 ﻿/*
- *  File Name:   MainWindow.xaml.cs
+ *  File Name:   CensorRecord.cs
  *
  *  Project:     Prog3At2-Six
  *
@@ -21,52 +21,58 @@
  * ****************************************************************
  * Name: Bradley Willcott
  * ID:   M198449
- * Date: 21/10/2021
+ * Date: 23/10/2021
  * ****************************************************************
  */
 
 namespace Prog3At2_Six
 {
-    using System.Collections.Generic;
-    using System.Windows;
+    using System;
+    using System.Text;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml.
+    /// Defines the <see cref="CensorRecord" />.
     /// </summary>
-    public partial class MainWindow : Window
+    public class CensorRecord
     {
         /// <summary>
-        /// Defines the blankPage.
+        /// Initializes a new instance of the <see cref="CensorRecord"/> class.
         /// </summary>
-        private static readonly BlankPage blankPage = new BlankPage();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
-        /// </summary>
-        public MainWindow()
+        /// <param name="dateTime">The dateTime<see cref="DateTime"/>.</param>
+        /// <param name="measurement">The measurement<see cref="string"/>.</param>
+        /// <param name="value">The value<see cref="double"/>.</param>
+        public CensorRecord(DateTime dateTime, string measurement, double value)
         {
-            InitializeComponent();
-            CentreFrame.Content = blankPage;
+            this.DateTime = dateTime;
+            this.Measurement = measurement;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets the CensorData.
+        /// Gets the DateTime.
         /// </summary>
-        public List<CensorRecord> CensorData { get; private set; }
+        public DateTime DateTime { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether DataIsDirty.
+        /// Gets the Measurement.
         /// </summary>
-        public bool DataIsDirty { get; set; }
+        public string Measurement { get; private set; }
 
         /// <summary>
-        /// Gets the DisplayFilePage.
+        /// Gets the Value.
         /// </summary>
-        public DisplayFilePage DisplayFilePage { get; private set; }
+        public double Value { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether FileIsOpen.
-        /// </summary>
-        public bool FileIsOpen { get; set; }
+        override
+        public string ToString()
+        {
+            StringBuilder sb = new();
+
+            sb.Append(DateTime).Append(", ")
+                .Append(Measurement).Append(", ")
+                .Append(Value);
+
+            return sb.ToString();
+        }
     }
 }

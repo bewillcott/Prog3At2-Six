@@ -35,48 +35,31 @@ namespace Prog3At2_Six
     public static class CustomCommands
     {
         /// <summary>
-        /// Defines the _AboutCommand.
+        /// Defines the About.
         /// </summary>
-        private static RoutedUICommand _AboutCommand;
+        public static readonly RoutedUICommand About =
+            new(@"_About", nameof(About), typeof(CustomCommands));
 
         /// <summary>
-        /// Defines the _AddCommand.
+        /// Defines the Add.
         /// </summary>
-        private static RoutedUICommand _AddCommand;
+        public static readonly RoutedUICommand Add =
+            new(
+                        @"_Add",
+                        nameof(Add),
+                        typeof(CustomCommands),
+                        new InputGestureCollection {
+                        new KeyGesture(Key.A, ModifierKeys.Control)});
 
         /// <summary>
-        /// Gets the About command.
+        /// Defines the Add.
         /// </summary>
-        public static RoutedUICommand About
-        {
-            get
-            {
-                if (_AboutCommand == null)
-                {
-                    _AboutCommand = new RoutedUICommand(@"_About", nameof(About), typeof(CustomCommands));
-                }
-
-                return _AboutCommand;
-            }
-        }
-
-        /// <summary>
-        /// Gets the Add command.
-        /// </summary>
-        public static RoutedUICommand Add
-        {
-            get
-            {
-                if (_AddCommand == null)
-                {
-                    InputGestureCollection input = new();
-                    input.Add(new KeyGesture(Key.A, ModifierKeys.Control, "Ctrl+A"));
-
-                    _AddCommand = new RoutedUICommand(@"_Add", nameof(Add), typeof(CustomCommands), input);
-                }
-
-                return _AddCommand;
-            }
-        }
+        public static readonly RoutedUICommand Exit =
+            new(
+                        @"E_xit",
+                        nameof(Exit),
+                        typeof(CustomCommands),
+                        new InputGestureCollection {
+                        new KeyGesture(Key.F4, ModifierKeys.Alt)});
     }
 }
