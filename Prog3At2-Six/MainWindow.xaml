@@ -36,6 +36,7 @@
         Title="MainWindow" Height="400" Width="400"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"  WindowStyle="ThreeDBorderWindow"
         Closing="Window_Closing" Background="Cornsilk">
+
     <Window.CommandBindings>
         <CommandBinding Command="Open" CanExecute="OpenCommand_CanExecute" Executed="OpenCommand_Executed" />
         <CommandBinding Command="New" CanExecute="NewCommand_CanExecute" Executed="NewCommand_Executed" />
@@ -51,15 +52,22 @@
         <Style TargetType="Menu">
             <Setter Property="Background" Value="BurlyWood" />
         </Style>
-        <Style TargetType="MenuItem">
-            <Setter Property="Background" Value="BlanchedAlmond" />
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Background" Value="BurlyWood" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect />
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
     <DockPanel>
         <Line DockPanel.Dock="Top" Stroke="Black" StrokeThickness="1" X1="0" X2="400" />
-        <Menu DockPanel.Dock="Top" Padding="3">
-            <MenuItem Header="_File" Padding="5,3">
+        <Menu DockPanel.Dock="Top" Height="25" VerticalContentAlignment="Stretch">
+            <MenuItem Header="_File">
                 <MenuItem Header="_New" Command="New" />
                 <MenuItem Header="_Open" Command="Open" />
                 <Separator />
@@ -70,10 +78,10 @@
                 <Separator />
                 <MenuItem Command="{x:Static cmds:CustomCommands.Exit}" />
             </MenuItem>
-            <MenuItem Header="_Row">
-                <MenuItem Command="{x:Static cmds:CustomCommands.Add}" />
-            </MenuItem>
-            <MenuItem Header="_Help" Padding="5,3">
+
+            <MenuItem Header="_Add Reading" Command="{x:Static cmds:CustomCommands.Add}" />
+
+            <MenuItem Header="_Help">
                 <MenuItem Command="{x:Static cmds:CustomCommands.About}" />
             </MenuItem>
         </Menu>

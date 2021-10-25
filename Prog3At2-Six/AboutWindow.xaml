@@ -34,7 +34,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="About" Height="440" Width="400"
-        WindowStartupLocation="CenterOwner" Background="Cornsilk">
+        WindowStartupLocation="CenterOwner" Background="Cornsilk"
+        ResizeMode="NoResize"  WindowStyle="ThreeDBorderWindow">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -42,7 +43,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Line DockPanel.Dock="Top" Stroke="Black" StrokeThickness="1" X1="0" X2="400" />
+        <Line Stroke="Black" StrokeThickness="1" X1="0" X2="400" />
 
         <Grid Margin="10" Grid.Row="1">
             <Grid.Resources>

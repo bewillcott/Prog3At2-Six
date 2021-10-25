@@ -73,7 +73,6 @@ namespace Prog3At2_Six
             // Display the Product Description
             FlowDocument doc = new();
             doc.PagePadding = new Thickness(5);
-            //doc.Background = Brushes.White;
 
             Paragraph p = new(new Run(DESCRIPTION));
             doc.Blocks.Add(p);

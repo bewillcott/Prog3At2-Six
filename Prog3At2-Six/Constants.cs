@@ -46,7 +46,7 @@ namespace Prog3At2_Six
         /// <summary>
         /// The build date of the project.
         /// </summary>
-        public const string BUILD_DATE = @"25 October 2021";
+        public const string BUILD_DATE = @"26 October 2021";
 
         /// <summary>
         /// The Project title.

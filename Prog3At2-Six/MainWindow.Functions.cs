@@ -113,6 +113,22 @@ namespace Prog3At2_Six
         }
 
         /// <summary>
+        /// The ShowCensorRecordForm.
+        /// </summary>
+        private void ShowCensorRecordForm()
+        {
+            CensorRecordForm = new(CensorRecord);
+            CensorRecordForm.Owner = this;
+
+            if ((bool)CensorRecordForm.ShowDialog())
+            {
+                CensorData.Add(CensorRecord);
+                DataIsDirty = true;
+                SetTitle();
+            }
+        }
+
+        /// <summary>
         /// The ShowDisplayFilePage.
         /// </summary>
         private void ShowDisplayFilePage()
