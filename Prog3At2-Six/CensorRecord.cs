@@ -28,13 +28,31 @@
 namespace Prog3At2_Six
 {
     using System;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
     using System.Text;
 
     /// <summary>
     /// Defines the <see cref="CensorRecord" />.
     /// </summary>
-    public class CensorRecord
+    public class CensorRecord : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Defines the dateTime.
+        /// </summary>
+        private DateTime? dateTime;
+
+        private string measurement;
+        private double value;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CensorRecord"/> class.
+        /// </summary>
+        public CensorRecord()
+        {
+            DateTime = null;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CensorRecord"/> class.
         /// </summary>
@@ -49,30 +67,85 @@ namespace Prog3At2_Six
         }
 
         /// <summary>
-        /// Gets the DateTime.
+        /// Defines the PropertyChanged.
         /// </summary>
-        public DateTime DateTime { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Gets the Measurement.
+        /// Gets or sets the DateTime
+        /// Gets the DateTime....
         /// </summary>
-        public string Measurement { get; private set; }
+        public DateTime? DateTime
+        {
+            get => dateTime;
+            set
+            {
+                if (dateTime != value)
+                {
+                    dateTime = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
-        /// Gets the Value.
+        /// Gets or sets the Measurement
+        /// Gets the Measurement....
         /// </summary>
-        public double Value { get; private set; }
+        public string Measurement
+        {
+            get => measurement;
 
+            set
+            {
+                if (measurement != value)
+                {
+                    measurement = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Value
+        /// Gets the Value....
+        /// </summary>
+        public double Value
+        {
+            get => value;
+            set
+            {
+                if (this.value != value)
+                {
+                    this.value = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The ToString.
+        /// </summary>
+        /// <returns>The <see cref="string"/>.</returns>
         override
         public string ToString()
         {
             StringBuilder sb = new();
 
-            sb.Append(DateTime).Append(", ")
-                .Append(Measurement).Append(", ")
+            sb.Append(DateTime).Append("\t")
+                .Append(Measurement).Append("\t")
                 .Append(Value);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// The NotifyPropertyChanged.
+        /// </summary>
+        /// <param name="propertyName">The propertyName<see cref="String"/>.</param>
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

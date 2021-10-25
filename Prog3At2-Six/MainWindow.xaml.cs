@@ -27,7 +27,7 @@
 
 namespace Prog3At2_Six
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Windows;
 
     /// <summary>
@@ -36,9 +36,29 @@ namespace Prog3At2_Six
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// Defines the DEFAULT_FILENAME.
+        /// </summary>
+        private const string DEFAULT_FILENAME = @"CensorData.csv";
+
+        /// <summary>
+        /// Defines the NEW_FILE_NAME.
+        /// </summary>
+        private const string NEW_FILE_NAME = @"Untitled";
+
+        /// <summary>
+        /// Defines the TITLE.
+        /// </summary>
+        private const string TITLE = @"Prog3 AT2 Six";
+
+        /// <summary>
         /// Defines the blankPage.
         /// </summary>
         private static readonly BlankPage blankPage = new BlankPage();
+
+        /// <summary>
+        /// Defines the fileName.
+        /// </summary>
+        private string fileName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -46,13 +66,24 @@ namespace Prog3At2_Six
         public MainWindow()
         {
             InitializeComponent();
+            FileName = null;
             CentreFrame.Content = blankPage;
         }
 
         /// <summary>
         /// Gets the CensorData.
         /// </summary>
-        public List<CensorRecord> CensorData { get; private set; }
+        public ObservableCollection<CensorRecord> CensorData { get; private set; }
+
+        /// <summary>
+        /// Gets the CensorRecord.
+        /// </summary>
+        public CensorRecord CensorRecord { get; private set; }
+
+        /// <summary>
+        /// Gets the CensorRecordForm.
+        /// </summary>
+        public CensorRecordForm CensorRecordForm { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether DataIsDirty.
@@ -65,8 +96,27 @@ namespace Prog3At2_Six
         public DisplayFilePage DisplayFilePage { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether FileIsNew.
+        /// </summary>
+        public bool FileIsNew { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether FileIsOpen.
         /// </summary>
         public bool FileIsOpen { get; set; }
+
+        /// <summary>
+        /// Gets the FileName.
+        /// </summary>
+        public string FileName
+        {
+            get => fileName;
+
+            private set
+            {
+                fileName = value;
+                SetTitle();
+            }
+        }
     }
 }

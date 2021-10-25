@@ -32,12 +32,46 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:Prog3At2_Six"
+      xmlns:cmds="clr-namespace:Prog3At2_Six"
       mc:Ignorable="d"
       d:DesignHeight="400" d:DesignWidth="400"
       Title="DisplayFilePage">
 
     <Grid>
-        <ListView  Margin="10" Name="csvListView" />
+        <ListView  Margin="10" Name="csvListView">
+            <ListView.Resources>
+                <cmds:DateTimeLocaleAUConverter x:Key="dateTimeConverter" />
+
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ListView.Resources>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding DateTime, Converter={StaticResource dateTimeConverter }}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="DateTime" Click="csvListViewColumnHeader_Click">
+                                DateTime Stamp
+                            </GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Measurement}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Measurement" Click="csvListViewColumnHeader_Click">
+                                Measurement
+                            </GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="50" DisplayMemberBinding="{Binding Value}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Value" Click="csvListViewColumnHeader_Click">
+                                Value
+                            </GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Page>

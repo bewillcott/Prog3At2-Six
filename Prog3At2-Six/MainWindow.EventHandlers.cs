@@ -28,8 +28,14 @@
 namespace Prog3At2_Six
 {
     using System.ComponentModel;
+    using System.Globalization;
+    using System.IO;
     using System.Windows;
     using System.Windows.Input;
+
+    using CsvHelper;
+
+    using Microsoft.Win32;
 
     /// <summary>
     /// Defines the <see cref="MainWindow" />.
@@ -75,10 +81,24 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="ExecutedRoutedEventArgs"/>.</param>
         private void AddCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // TODO: Display the Add dialog
-            MessageBox.Show("Edit/Add selected or Ctrl+A pressed!");
-            DataIsDirty = true;
+            // Display the CensorRecordForm
+            CensorRecord = new();
+            ShowCensorRecordForm();
+
             e.Handled = true;
+        }
+
+        private void ShowCensorRecordForm()
+        {
+            CensorRecordForm = new(CensorRecord);
+            CensorRecordForm.Owner = this;
+
+            if ((bool)CensorRecordForm.ShowDialog())
+            {
+                CensorData.Add(CensorRecord);
+                DataIsDirty = true;
+                SetTitle();
+            }
         }
 
         /// <summary>
@@ -112,8 +132,8 @@ namespace Prog3At2_Six
             if (!cancel)
             {
                 CentreFrame.Content = blankPage;
-                FileIsOpen = false;
-                DataIsDirty = false;
+                FileIsOpen = DataIsDirty = FileIsNew = false;
+                FileName = null;
             }
 
             e.Handled = true;
@@ -141,6 +161,29 @@ namespace Prog3At2_Six
         }
 
         /// <summary>
+        /// The NewCommand_CanExecute.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="System.Windows.Input.CanExecuteRoutedEventArgs"/>.</param>
+        private void NewCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !FileIsOpen;
+        }
+
+        /// <summary>
+        /// The NewCommand_Executed.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="System.Windows.Input.ExecutedRoutedEventArgs"/>.</param>
+        private void NewCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            CensorData = new();
+            FileIsNew = FileIsOpen = true;
+            FileName = NEW_FILE_NAME;
+            ShowDisplayFilePage();
+        }
+
+        /// <summary>
         /// The OpenCommand_CanExecute.
         /// </summary>
         /// <param name="sender">The sender<see cref="object"/>.</param>
@@ -157,24 +200,67 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="ExecutedRoutedEventArgs"/>.</param>
         private void OpenCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // TODO: Display FileOpenDialog
-            // TODO: Open/Read in the file
-            // Prepare data
-            CensorData = new();
+            // Display FileOpenDialog
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = @"CSV files (*.csv)|*.csv";
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.Title = @"Open CSV File";
 
-            // Test data
-            CensorData.Add(new(new(2021, 1, 12), "Temperature", 25.0));
-            CensorData.Add(new(new(2021, 1, 13), "Temperature", 27.3));
-            CensorData.Add(new(new(2021, 1, 14), "Temperature", 22.4));
-            CensorData.Add(new(new(2021, 1, 15), "Temperature", 26.1));
-            CensorData.Add(new(new(2021, 1, 16), "Temperature", 28.3));
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filename = openFileDialog.FileName;
 
-            // Open DisplayFilePage
-            DisplayFilePage = new DisplayFilePage(CensorData);
-            CentreFrame.Content = DisplayFilePage;
+                if (LoadData(filename))
+                {
+                    FileName = filename;
+                    ShowDisplayFilePage();
+                }
+            }
 
-            //MessageBox.Show("File/Open selected or Ctrl+O pressed!");
-            FileIsOpen = true;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// The SaveAsCommand_CanExecute.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="System.Windows.Input.CanExecuteRoutedEventArgs"/>.</param>
+        private void SaveAsCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = DataIsDirty;
+        }
+
+        /// <summary>
+        /// The SaveAsCommand_Executed.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="System.Windows.Input.ExecutedRoutedEventArgs"/>.</param>
+        private void SaveAsCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            // Display SaveFileDialog
+            SaveFileDialog saveFileDialog = new();
+            saveFileDialog.Filter = @"CSV files (*.csv)|*.csv";
+            saveFileDialog.OverwritePrompt = true;
+            saveFileDialog.Title = @"Save CSV File As";
+            saveFileDialog.DefaultExt = @".csv";
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.FileName = FileIsNew ? DEFAULT_FILENAME : FileName;
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filename = saveFileDialog.FileName;
+
+                // Save the data to the selected file
+                using (var writer = new StreamWriter(filename))
+                using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+                {
+                    csv.WriteRecords(CensorData);
+                    DataIsDirty = false;
+                    FileIsNew = false;
+                    FileName = filename;
+                }
+            }
+
             e.Handled = true;
         }
 
@@ -185,7 +271,7 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="CanExecuteRoutedEventArgs"/>.</param>
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = DataIsDirty;
+            e.CanExecute = DataIsDirty && !FileIsNew;
         }
 
         /// <summary>
@@ -195,9 +281,16 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="ExecutedRoutedEventArgs"/>.</param>
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // TODO: Save the data to the original file
-            MessageBox.Show("File/Save selected or Ctrl+S pressed!");
+            // Save the data to the original file
+            using (var writer = new StreamWriter(FileName))
+            using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+            {
+                csv.WriteRecords(CensorData);
+            }
+
             DataIsDirty = false;
+            SetTitle();
+
             e.Handled = true;
         }
 

@@ -27,33 +27,71 @@
 
 namespace Prog3At2_Six
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
     using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-    using System.Windows.Navigation;
-    using System.Windows.Shapes;
 
     /// <summary>
-    /// Interaction logic for DisplayFilePage.xaml
+    /// Interaction logic for DisplayFilePage.xaml.
     /// </summary>
     public partial class DisplayFilePage : Page
     {
-        private readonly List<CensorRecord> censorData;
+        /// <summary>
+        /// Defines the censorData.
+        /// </summary>
+        private readonly ObservableCollection<CensorRecord> censorData;
 
-        public DisplayFilePage(List<CensorRecord> censorData)
+        /// <summary>
+        /// Defines the listViewSortAdorner.
+        /// </summary>
+        private SortAdorner listViewSortAdorner;
+
+        /// <summary>
+        /// Defines the listViewSortCol.
+        /// </summary>
+        private GridViewColumnHeader listViewSortCol;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DisplayFilePage"/> class.
+        /// </summary>
+        /// <param name="censorData">The censorData<see cref="List{CensorRecord}"/>.</param>
+        public DisplayFilePage(ObservableCollection<CensorRecord> censorData)
         {
             InitializeComponent();
             this.censorData = censorData;
             csvListView.ItemsSource = censorData;
+        }
+
+        /// <summary>
+        /// The csvListViewColumnHeader_Click.
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/>.</param>
+        /// <param name="e">The e<see cref="RoutedEventArgs"/>.</param>
+        private void csvListViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader column = (sender as GridViewColumnHeader);
+            string sortBy = column.Tag.ToString();
+
+            if (listViewSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
+                csvListView.Items.SortDescriptions.Clear();
+            }
+
+            ListSortDirection newDir = ListSortDirection.Ascending;
+
+            if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
+            {
+                newDir = ListSortDirection.Descending;
+            }
+
+            listViewSortCol = column;
+            listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
+            csvListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
     }
 }

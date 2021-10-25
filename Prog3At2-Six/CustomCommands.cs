@@ -52,7 +52,18 @@ namespace Prog3At2_Six
                         new KeyGesture(Key.A, ModifierKeys.Control)});
 
         /// <summary>
-        /// Defines the Add.
+        /// Defines the Edit.
+        /// </summary>
+        public static readonly RoutedUICommand Edit =
+            new(
+                        @"_Edit",
+                        nameof(Edit),
+                        typeof(CustomCommands),
+                        new InputGestureCollection {
+                        new KeyGesture(Key.E, ModifierKeys.Control)});
+
+        /// <summary>
+        /// Defines the Exit.
         /// </summary>
         public static readonly RoutedUICommand Exit =
             new(
