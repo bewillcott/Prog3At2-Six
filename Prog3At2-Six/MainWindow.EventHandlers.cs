@@ -59,8 +59,11 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="ExecutedRoutedEventArgs"/>.</param>
         private void AboutCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // TODO: Display the About dialog
-            MessageBox.Show("Help/About selected");
+            // Display the About dialog
+            AboutWindow aboutWindow = new();
+            aboutWindow.Owner = this;
+            aboutWindow.ShowDialog();
+
             e.Handled = true;
         }
 
@@ -86,19 +89,6 @@ namespace Prog3At2_Six
             ShowCensorRecordForm();
 
             e.Handled = true;
-        }
-
-        private void ShowCensorRecordForm()
-        {
-            CensorRecordForm = new(CensorRecord);
-            CensorRecordForm.Owner = this;
-
-            if ((bool)CensorRecordForm.ShowDialog())
-            {
-                CensorData.Add(CensorRecord);
-                DataIsDirty = true;
-                SetTitle();
-            }
         }
 
         /// <summary>
