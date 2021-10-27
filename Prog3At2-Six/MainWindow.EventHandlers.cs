@@ -124,6 +124,7 @@ namespace Prog3At2_Six
                 CentreFrame.Content = blankPage;
                 FileIsOpen = DataIsDirty = FileIsNew = false;
                 FileName = null;
+                SetStatusText(null);
             }
 
             e.Handled = true;
