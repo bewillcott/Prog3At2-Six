@@ -1,5 +1,5 @@
 ﻿/*
- *  File Name:   CensorRecord.cs
+ *  File Name:   SensorReading.cs
  *
  *  Project:     Prog3At2-Six
  *
@@ -33,9 +33,9 @@ namespace Prog3At2_Six
     using System.Text;
 
     /// <summary>
-    /// Defines the <see cref="CensorRecord" />.
+    /// Defines the <see cref="SensorReading" />.
     /// </summary>
-    public class CensorRecord : INotifyPropertyChanged
+    public class SensorReading : INotifyPropertyChanged
     {
         /// <summary>
         /// Defines the dateTime.
@@ -46,20 +46,20 @@ namespace Prog3At2_Six
         private double value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CensorRecord"/> class.
+        /// Initializes a new instance of the <see cref="SensorReading"/> class.
         /// </summary>
-        public CensorRecord()
+        public SensorReading()
         {
             DateTime = null;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CensorRecord"/> class.
+        /// Initializes a new instance of the <see cref="SensorReading"/> class.
         /// </summary>
         /// <param name="dateTime">The dateTime<see cref="DateTime"/>.</param>
         /// <param name="measurement">The measurement<see cref="string"/>.</param>
         /// <param name="value">The value<see cref="double"/>.</param>
-        public CensorRecord(DateTime dateTime, string measurement, double value)
+        public SensorReading(DateTime dateTime, string measurement, double value)
         {
             this.DateTime = dateTime;
             this.Measurement = measurement;
@@ -72,8 +72,7 @@ namespace Prog3At2_Six
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Gets or sets the DateTime
-        /// Gets the DateTime....
+        /// Gets or sets the DateTime.
         /// </summary>
         public DateTime? DateTime
         {
@@ -90,7 +89,6 @@ namespace Prog3At2_Six
 
         /// <summary>
         /// Gets or sets the Measurement
-        /// Gets the Measurement....
         /// </summary>
         public string Measurement
         {
@@ -108,7 +106,6 @@ namespace Prog3At2_Six
 
         /// <summary>
         /// Gets or sets the Value
-        /// Gets the Value....
         /// </summary>
         public double Value
         {

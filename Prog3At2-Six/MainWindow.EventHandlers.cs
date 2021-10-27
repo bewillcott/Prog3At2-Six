@@ -85,8 +85,8 @@ namespace Prog3At2_Six
         private void AddCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Display the CensorRecordForm
-            CensorRecord = new();
-            ShowCensorRecordForm();
+            SensorReading = new();
+            ShowSensorReadingForm();
 
             e.Handled = true;
         }
@@ -111,7 +111,7 @@ namespace Prog3At2_Six
             bool cancel = false;
 
             if (DataIsDirty && MessageBox.Show(
-                        $"Data is dirty!\nDo you still want to Close the file?",
+                        $"Data has changed!\nDo you still want to Close the file without saving?",
                         "Closing File", MessageBoxButton.YesNo
                         , MessageBoxImage.Exclamation)
                         == MessageBoxResult.No)
@@ -167,9 +167,10 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="System.Windows.Input.ExecutedRoutedEventArgs"/>.</param>
         private void NewCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            CensorData = new();
+            SensorData = new();
             FileIsNew = FileIsOpen = true;
             FileName = NEW_FILE_NAME;
+            SetStatusText(@"New memory file open");
             ShowDisplayFilePage();
         }
 
@@ -203,6 +204,7 @@ namespace Prog3At2_Six
                 if (LoadData(filename))
                 {
                     FileName = filename;
+                    SetStatusText($"Opened file: {Path.GetFileName(filename)}");
                     ShowDisplayFilePage();
                 }
             }
@@ -217,7 +219,7 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="System.Windows.Input.CanExecuteRoutedEventArgs"/>.</param>
         private void SaveAsCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = DataIsDirty;
+            e.CanExecute = FileIsOpen;
         }
 
         /// <summary>
@@ -244,10 +246,11 @@ namespace Prog3At2_Six
                 using (var writer = new StreamWriter(filename))
                 using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
                 {
-                    csv.WriteRecords(CensorData);
+                    csv.WriteRecords(SensorData);
                     DataIsDirty = false;
                     FileIsNew = false;
                     FileName = filename;
+                    SetStatusText($"Data saved to file: {Path.GetFileName(filename)}");
                 }
             }
 
@@ -275,9 +278,10 @@ namespace Prog3At2_Six
             using (var writer = new StreamWriter(FileName))
             using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
             {
-                csv.WriteRecords(CensorData);
+                csv.WriteRecords(SensorData);
             }
 
+            SetStatusText($"Data saved");
             DataIsDirty = false;
             SetTitle();
 
@@ -292,7 +296,7 @@ namespace Prog3At2_Six
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (DataIsDirty && MessageBox.Show(
-                        $"Data is dirty!\nDo you still want to Exit?",
+                        $"Data has changed!\nDo you still want to Exit without saving?",
                         "Exiting", MessageBoxButton.YesNo
                         , MessageBoxImage.Exclamation)
                         == MessageBoxResult.No)

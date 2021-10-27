@@ -40,22 +40,31 @@ namespace Prog3At2_Six
     public partial class MainWindow
     {
         /// <summary>
+        /// Set the Status line text.
+        /// </summary>
+        /// <param name="message">The message<see cref="string"/>.</param>
+        public void SetStatusText(string message)
+        {
+            statusTextBlock.Text = message != null ? message : string.Empty;
+        }
+
+        /// <summary>
         /// LoadData for development/testing of UI.
         /// </summary>
         /// <returns>The <see cref="bool"/>.</returns>
         private bool LoadData()
         {
             // Prepare data
-            CensorData = new();
+            SensorData = new();
 
             // Test data
-            CensorData.Add(new(new(2021, 1, 12, 9, 0, 0), "Temperature", 25.0));
-            CensorData.Add(new(new(2021, 5, 13), "Temperature", 27.3));
-            CensorData.Add(new(new(2021, 3, 14), "Temperature", 22.4));
-            CensorData.Add(new(new(2021, 10, 15), "Temperature", 26.1));
-            CensorData.Add(new(new(2021, 7, 16), "Temperature", 28.3));
+            SensorData.Add(new(new(2021, 1, 12, 9, 0, 0), "Temperature", 25.0));
+            SensorData.Add(new(new(2021, 5, 13), "Temperature", 27.3));
+            SensorData.Add(new(new(2021, 3, 14), "Temperature", 22.4));
+            SensorData.Add(new(new(2021, 10, 15), "Temperature", 26.1));
+            SensorData.Add(new(new(2021, 7, 16), "Temperature", 28.3));
 
-            return FileIsOpen = CensorData.Count > 0;
+            return FileIsOpen = SensorData.Count > 0;
         }
 
         /// <summary>
@@ -66,7 +75,7 @@ namespace Prog3At2_Six
         private bool LoadData(string filename)
         {
             // Prepare data
-            CensorData = new();
+            SensorData = new();
 
             // Open file and load the data
             using (StreamReader reader = new(filename))
@@ -74,23 +83,23 @@ namespace Prog3At2_Six
             {
                 try
                 {
-                    foreach (CensorRecord record in csv.GetRecords<CensorRecord>())
+                    foreach (SensorReading record in csv.GetRecords<SensorReading>())
                     {
-                        CensorData.Add(record);
+                        SensorData.Add(record);
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Loading Data", MessageBoxButton.OK, MessageBoxImage.Error);
-                    CensorData.Clear();
+                    SensorData.Clear();
                 }
             }
 
-            return FileIsOpen = CensorData.Count > 0;
+            return FileIsOpen = SensorData.Count > 0;
         }
 
         /// <summary>
-        /// The SetTitle.
+        /// Set the Window Title.
         /// </summary>
         private void SetTitle()
         {
@@ -113,29 +122,32 @@ namespace Prog3At2_Six
         }
 
         /// <summary>
-        /// The ShowCensorRecordForm.
-        /// </summary>
-        private void ShowCensorRecordForm()
-        {
-            CensorRecordForm = new(CensorRecord);
-            CensorRecordForm.Owner = this;
-
-            if ((bool)CensorRecordForm.ShowDialog())
-            {
-                CensorData.Add(CensorRecord);
-                DataIsDirty = true;
-                SetTitle();
-            }
-        }
-
-        /// <summary>
-        /// The ShowDisplayFilePage.
+        /// Show the DisplayFilePage.
         /// </summary>
         private void ShowDisplayFilePage()
         {
             // Open DisplayFilePage
-            DisplayFilePage = new DisplayFilePage(CensorData);
+            DisplayFilePage = new DisplayFilePage(SensorData, this);
             CentreFrame.Content = DisplayFilePage;
+        }
+
+        /// <summary>
+        /// Show the SensorRecordForm.
+        /// </summary>
+        private void ShowSensorReadingForm()
+        {
+            SetStatusText(null);
+
+            SensorReadingForm = new(SensorReading);
+            SensorReadingForm.Owner = this;
+
+            if ((bool)SensorReadingForm.ShowDialog())
+            {
+                SensorData.Add(SensorReading);
+                DataIsDirty = true;
+                SetTitle();
+                SetStatusText(@"New sensor reading added");
+            }
         }
     }
 }

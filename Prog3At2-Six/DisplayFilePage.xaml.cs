@@ -42,12 +42,14 @@ namespace Prog3At2_Six
         /// <summary>
         /// Defines the censorData.
         /// </summary>
-        private readonly ObservableCollection<CensorRecord> censorData;
+        private readonly ObservableCollection<SensorReading> sensorData;
 
         /// <summary>
         /// Defines the listViewSortAdorner.
         /// </summary>
         private SortAdorner listViewSortAdorner;
+
+        private MainWindow mainWindow;
 
         /// <summary>
         /// Defines the listViewSortCol.
@@ -57,12 +59,13 @@ namespace Prog3At2_Six
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayFilePage"/> class.
         /// </summary>
-        /// <param name="censorData">The censorData<see cref="List{CensorRecord}"/>.</param>
-        public DisplayFilePage(ObservableCollection<CensorRecord> censorData)
+        /// <param name="sensorData">The censorData<see cref="List{SensorReading}"/>.</param>
+        public DisplayFilePage(ObservableCollection<SensorReading> sensorData, MainWindow mainWindow)
         {
             InitializeComponent();
-            this.censorData = censorData;
-            csvListView.ItemsSource = censorData;
+            this.sensorData = sensorData;
+            this.mainWindow = mainWindow;
+            csvListView.ItemsSource = sensorData;
         }
 
         /// <summary>
@@ -72,6 +75,8 @@ namespace Prog3At2_Six
         /// <param name="e">The e<see cref="RoutedEventArgs"/>.</param>
         private void csvListViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
+            mainWindow.SetStatusText(null);
+
             GridViewColumnHeader column = (sender as GridViewColumnHeader);
             string sortBy = column.Tag.ToString();
 
@@ -92,6 +97,11 @@ namespace Prog3At2_Six
             listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
             AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
             csvListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+        }
+
+        private void CsvListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            mainWindow.SetStatusText(null);
         }
     }
 }

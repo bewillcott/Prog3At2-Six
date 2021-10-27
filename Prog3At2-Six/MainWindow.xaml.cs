@@ -38,7 +38,7 @@ namespace Prog3At2_Six
         /// <summary>
         /// Defines the DEFAULT_FILENAME.
         /// </summary>
-        private const string DEFAULT_FILENAME = @"CensorData.csv";
+        private const string DEFAULT_FILENAME = @"SensorData.csv";
 
         /// <summary>
         /// Defines the NEW_FILE_NAME.
@@ -68,22 +68,23 @@ namespace Prog3At2_Six
             InitializeComponent();
             FileName = null;
             CentreFrame.Content = blankPage;
+            SetStatusText(null);
         }
 
         /// <summary>
-        /// Gets the CensorData.
+        /// Gets the SensorData.
         /// </summary>
-        public ObservableCollection<CensorRecord> CensorData { get; private set; }
+        public ObservableCollection<SensorReading> SensorData { get; private set; }
 
         /// <summary>
-        /// Gets the CensorRecord.
+        /// Gets the SensorRecord.
         /// </summary>
-        public CensorRecord CensorRecord { get; private set; }
+        public SensorReading SensorReading { get; private set; }
 
         /// <summary>
-        /// Gets the CensorRecordForm.
+        /// Gets the SensorRecordForm.
         /// </summary>
-        public CensorRecordForm CensorRecordForm { get; private set; }
+        public SensorReadingForm SensorReadingForm { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether DataIsDirty.

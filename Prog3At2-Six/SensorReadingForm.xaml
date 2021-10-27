@@ -27,13 +27,13 @@
  */
 -->
 
-<Window x:Class="Prog3At2_Six.CensorRecordForm"
+<Window x:Class="Prog3At2_Six.SensorReadingForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="CensorRecordForm" Height="220" Width="400"
+        Title="Sensor Reading Form" Height="220" Width="400"
         WindowStartupLocation="CenterOwner" Background="Linen"
         ResizeMode="NoResize"  WindowStyle="ThreeDBorderWindow">
 

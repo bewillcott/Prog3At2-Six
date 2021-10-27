@@ -1,5 +1,5 @@
 ﻿/*
- *  File Name:   CensorRecordForm.xaml.cs
+ *  File Name:   SensorReadingForm.xaml.cs
  *
  *  Project:     Prog3At2-Six
  *
@@ -31,104 +31,37 @@ namespace Prog3At2_Six
     using System.Windows;
 
     /// <summary>
-    /// Defines the <see cref="CensorRecordForm" />.
+    /// Defines the <see cref="SensorReadingForm" />.
     /// </summary>
-    public partial class CensorRecordForm : Window
+    public partial class SensorReadingForm : Window
     {
         /// <summary>
         /// Defines the censorRecord.
         /// </summary>
-        private CensorRecord censorRecord;
+        private SensorReading sensorRecord;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CensorRecordForm"/> class.
+        /// Initializes a new instance of the <see cref="SensorReadingForm"/> class.
         /// </summary>
-        /// <param name="censorRecord">The censorRecord<see cref="CensorRecord"/>.</param>
-        public CensorRecordForm(CensorRecord censorRecord)
+        /// <param name="sensorReading">The censorRecord<see cref="SensorReading"/>.</param>
+        public SensorReadingForm(SensorReading sensorReading)
         {
             InitializeComponent();
-            this.censorRecord = censorRecord;
+            this.sensorRecord = sensorReading;
 
             // Load the form's fields
-            if (censorRecord.DateTime.HasValue)
+            if (sensorReading.DateTime.HasValue)
             {
-                dateField.Text = censorRecord.DateTime.Value.Date.ToString();
+                dateField.Text = sensorReading.DateTime.Value.Date.ToString();
                 dateField.Tag = dateField.Text;
-                timeTextBox.Text = censorRecord.DateTime.Value.TimeOfDay.ToString();
+                timeTextBox.Text = sensorReading.DateTime.Value.TimeOfDay.ToString();
                 timeTextBox.Tag = timeTextBox.Text;
-                measurementTextBox.Text = censorRecord.Measurement;
+                measurementTextBox.Text = sensorReading.Measurement;
                 measurementTextBox.Tag = measurementTextBox.Text;
-                valueTextBox.Text = censorRecord.Value.ToString();
+                valueTextBox.Text = sensorReading.Value.ToString();
                 valueTextBox.Tag = valueTextBox.Text;
             }
         }
-
-        ///// <summary>
-        ///// The ProcessDateTime.
-        ///// </summary>
-        ///// <returns>The <see cref="bool"/>.</returns>
-        //private bool ProcessDateTime()
-        //{
-        //    bool rtn = true;
-
-        //    string datetime = dateField.Text.Trim() + " " + timeTextBox.Text.Trim();
-        //    DateTime dateTime;
-
-        //    if (DateTime.TryParse(datetime, out dateTime))
-        //    {
-        //        censorRecord.DateTime = dateTime;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Invalid date and/or time format(s)", "DateTime Processing");
-        //        rtn = false;
-        //    }
-
-        //    return rtn;
-        //}
-
-        ///// <summary>
-        ///// The ProcessMeasurement.
-        ///// </summary>
-        ///// <returns>The <see cref="bool"/>.</returns>
-        //private bool ProcessMeasurement()
-        //{
-        //    bool rtn = true;
-
-        //    if (measurementTextBox.Text.Length > 0)
-        //    {
-        //        censorRecord.Measurement = measurementTextBox.Text;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Measurement must be labeled", "Measurement Processing");
-        //        rtn = false;
-        //    }
-
-        //    return rtn;
-        //}
-
-        ///// <summary>
-        ///// The ProcessValue.
-        ///// </summary>
-        ///// <returns>The <see cref="bool"/>.</returns>
-        //private bool ProcessValue()
-        //{
-        //    bool rtn = true;
-        //    double value;
-
-        //    if (double.TryParse(valueTextBox.Text, out value))
-        //    {
-        //        censorRecord.Value = value;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Invalid value", "Value Processing");
-        //        rtn = false;
-        //    }
-
-        //    return rtn;
-        //}
 
         /// <summary>
         /// The SubmitButton_Click.
@@ -139,7 +72,7 @@ namespace Prog3At2_Six
         {
             bool processFields = false;
 
-            if (censorRecord.DateTime.HasValue)
+            if (sensorRecord.DateTime.HasValue)
             {
                 if (!dateField.Tag.Equals(dateField.Text) || !timeTextBox.Tag.Equals(timeTextBox.Text)
                     || !measurementTextBox.Tag.Equals(measurementTextBox.Text)
@@ -159,13 +92,13 @@ namespace Prog3At2_Six
 
             if (processFields)
             {
-                CensorRecord result = ValidateFields();
+                SensorReading result = ValidateFields();
 
                 if (result != null)
                 {
-                    censorRecord.DateTime = result.DateTime;
-                    censorRecord.Measurement = result.Measurement;
-                    censorRecord.Value = result.Value;
+                    sensorRecord.DateTime = result.DateTime;
+                    sensorRecord.Measurement = result.Measurement;
+                    sensorRecord.Value = result.Value;
 
                     this.DialogResult = true;
                 }
@@ -177,13 +110,13 @@ namespace Prog3At2_Six
         /// <summary>
         /// The ValidateFields.
         /// </summary>
-        /// <returns>The <see cref="CensorRecord?"/>.</returns>
-        private CensorRecord ValidateFields()
+        /// <returns>The <see cref="SensorReading?"/>.</returns>
+        private SensorReading ValidateFields()
         {
             bool result = true;
             string message = string.Empty;
 
-            CensorRecord rtn = new();
+            SensorReading rtn = new();
 
             // Process the Date and Time fields
             string datetime = dateField.Text.Trim() + @" " + timeTextBox.Text.Trim();
